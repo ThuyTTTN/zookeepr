@@ -6,6 +6,11 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 const { animal } = require('./data/animals.json');
 
+function findById(id, animalsArray) {
+    const result = animalsArray.filter(animal => animal.id === id)[0];
+    return result;
+}
+
 app.get('/api/animals', (req, res) => {
     let results = animals;
     if (req.query) {
@@ -14,6 +19,11 @@ app.get('/api/animals', (req, res) => {
     res.json(results);
 });
 
+//param route must come after the GET route
+app.get('/api/animals/:id', (req, res) => {
+    const result = findById(req.params.id, animals);    
+    res.json(result);
+});
 
 //chain listen method onto server
 app.listen(PORT, () => {
