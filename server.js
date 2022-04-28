@@ -1,5 +1,7 @@
 const express = require('express');
 
+const PORT = process.env.PORT || 3001;
+
 //start express.js by assigning express() to app
 const app = express();
 const { animal } = require('./data/animals.json');
@@ -14,7 +16,7 @@ app.get('/api/animals', (req, res) => {
 
 
 //chain listen method onto server
-app.listen(3001, () => {
+app.listen(PORT, () => {
     console.log(`API server now on port 3001!`);
 });
 
