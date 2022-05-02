@@ -6,6 +6,9 @@ const { animals } = require('./data/animals');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+//middleware added to server.js; provided a file path to a location in our application; instruced server to make files static resources; all of our front-end code can now be accessed without having a specific server endpoint created for it
+app.use(express.static('public'));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -84,6 +87,23 @@ app.get('/api/animals/:id', (req, res) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+app.get('/animals', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+app.get('zookeepers', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+
+// * is a wildcard- any route that wasn't previously defined will fall under this request (/about, /contact, /members will be the same); Order of routes matter!  * should always come last!
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
 app.post('/api/animals', (req, res) => {
   // set id based on what the next index of the array will be
   req.body.id = animals.length.toString();
@@ -97,6 +117,8 @@ app.post('/api/animals', (req, res) => {
     res.json(animal);
   }
 });
+
+
 app.listen(PORT, () => {
   console.log(`API server now on port ${PORT}!`);
 });
